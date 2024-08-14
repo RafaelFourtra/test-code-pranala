@@ -8,9 +8,8 @@
 <body>
     <div class="form">
             <input type="number" name="angka" id="angka" placeholder="Input Angka" required>
-
             <div class="button" style="display: flex; margin-top: 10px;">
-                <button id="g-1">Generate Segitiga (Not Finished)</button>
+                <button id="g-1">Generate Segitiga</button>
                 <button id="g-2">Generate Bilangan Ganjil</button>
                 <button id="g-3">Generate Bilangan Prima</button>
             </div>
@@ -67,8 +66,17 @@
                     } else {
                         result.append('<p>Angka tersebut bukan bilangan prima</p>')
                     }
+                } else {
+                    if (response.segitiga) {
+                        var pre = $('<pre></pre>');
+                        response.segitiga.forEach(function(line){
+                            pre.append(line + '\n')
+                        }) 
+                        result.append(pre);
+                    } else {
+                        result.append('<p>Error: generate segitiga</p>')
+                    }
                 }
-
             },
             error : function(xhr) {
                 alert('Error :' + xhr.responseJSON.error)
