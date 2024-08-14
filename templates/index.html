@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Code</title>
+</head>
+<body>
+    <div class="form">
+            <input type="number" name="angka" id="angka" placeholder="Input Angka" required>
+
+            <div class="button" style="display: flex; margin-top: 10px;">
+                <button id="g-1">Generate Segitiga (Not Finished)</button>
+                <button id="g-2">Generate Bilangan Ganjil</button>
+                <button id="g-3">Generate Bilangan Prima</button>
+            </div>
+
+        <div class="result">
+
+        </div>
+        
+    </div>
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    var url = null
+    var type = null
+    $(document).ready(function(){
+        $('#g-1').click(function(e){
+            url = "/generate-segitiga"  
+            type = 'g-1' 
+            submitAngka(e)         
+        })
+        $('#g-2').click(function(e){
+            url = "/generate-bilangan-ganjil" 
+            type = 'g-2'
+            submitAngka(e)           
+        })
+        $('#g-3').click(function(e){
+            url = "/generate-bilangan-prima"    
+            type = 'g-3'
+            submitAngka(e)        
+        })
+    })
+
+    function submitAngka(e) {
+        e.preventDefault()
+        var angka = $('#angka').val()
+        $.ajax({
+            url : url,
+            type : 'POST',
+            data : { angka : angka},
+            success : function(response) {
+                const result = $('.result')
+
+                result.empty()
+
+                if (type == 'g-2') {
+                    response.odd_numbers.forEach(function(odd_numbers){
+                            result.append(' <ul>' + '<li>' + odd_numbers + '</li>' + '<ul>')
+                    })
+                } else if (type == 'g-3') {
+                    if (response.is_prima) {
+                        result.append('<p>Angka tersebut adalah bilangan prima</p>')
+                    } else {
+                        result.append('<p>Angka tersebut bukan bilangan prima</p>')
+                    }
+                }
+
+            },
+            error : function(xhr) {
+                alert('Error :' + xhr.responseJSON.error)
+            }
+        })
+    }
+</script>
